@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'httparty', '~> 0.13.1'
-gem 'activesupport', '~> 4.0.4'
+gem 'activesupport', '~> 4.0'
 
 group :development do
   gem 'pry'
