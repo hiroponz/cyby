@@ -1,10 +1,6 @@
 Simple Cybozu API wrapper
 ----------------
 
-### Author
-
-Hiroyuki Sato <hiroyuki_sato@spiber.jp>
-
 ## Ruby Gem
 
 TODO: Write a gem description
@@ -37,6 +33,10 @@ And then require in ruby script.
 
     require 'cyby'
 
-    kintone_rest_api = Cyby::KintoneRestApi.new(1) # kintone app id
-    records = kintone_rest_api.get('/records.json')
+    app = Cyby::Kintone::App.new(1) # kintone app id
+    records = app.find(query: 'id = 2')
+
+### Author
+
+Hiroyuki Sato <hiroyuki_sato@spiber.jp>
 
