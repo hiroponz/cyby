@@ -22,8 +22,12 @@ module Cyby
         type = args['type']
         value = args['value']
         case type
+        when 'CALC'
+          value.to_f
         when 'NUMBER'
           value.to_f
+        when 'RECORD_NUMBER'
+          value.to_i
         else
           value
         end
