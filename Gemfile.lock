@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cyby (0.0.2)
+    cyby (0.0.4)
       activesupport (~> 4.0)
       httparty (~> 0.13.1)
 
