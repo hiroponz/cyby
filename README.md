@@ -24,7 +24,9 @@ And then create '.cyby.yml' file in your home dirctory.
 
 ### Usage
 
-Require in ruby script.
+Get Kintone records.
+See the [official reference](https://cybozudev.zendesk.com/hc/ja/articles/202331474-%E3%83%AC%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E5%8F%96%E5%BE%97-GET-)
+to know details.
 
     require 'cyby'
     
@@ -50,8 +52,24 @@ Require in ruby script.
     # Select the fields.
     app.select("id", "name", "create_at").map { |record| [record.id, record.name, record.create_at] }
     
-    # Use method chain
-    app.select("id", "name").where("name like ?, "Bob").asc("id").each { |record| puts record.name }
+    # Using method chain
+    app.select("id", "name").where("name like ?, "Bob").asc("id").each 
+    
+    # Building complex query
+    relation = app.relation
+    if num > 10
+      relation.and("id < ?", num)
+    end
+    if time < Time.new(2015, 1, 1)
+      relation.and("create_at < ?", time)
+    end
+    if str.length >= 8
+      relation.and("name like ?" str)
+    end
+    unless sort.nil?
+     relation.asc(sort)
+    end
+    records = relation.all
 
 ### Author
 
