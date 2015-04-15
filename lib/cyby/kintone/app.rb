@@ -1,6 +1,7 @@
 module Cyby
   module Kintone
     class App
+      attr_reader :last_response
       LIMIT = 100
 
       def initialize(id)
@@ -25,10 +26,29 @@ module Cyby
           queries << "offset #{LIMIT * page}"
         end
         params_per_page[:query] = queries.join(" ")
-        resp = @api.get('/records.json', params_per_page)
-        resp['records'].map do |record|
+        @last_response = @api.get('/records.json', params_per_page)
+        unless @last_response.code == 200
+          fail @last_response["message"]
+        end
+        @last_response['records'].map do |record|
           Record.new(record)
         end
+      end
+
+      def all
+        Relation.new(self)
+      end
+
+      def where(cond, *params)
+        all.where(cond, *params)
+      end
+
+      def asc(field)
+        all.asc(field)
+      end
+
+      def desc(field)
+        all.desc(field)
       end
     end
   end
