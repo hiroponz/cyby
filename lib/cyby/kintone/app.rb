@@ -35,20 +35,24 @@ module Cyby
         end
       end
 
-      def all
+      def relation
         Relation.new(self)
       end
 
+      def all
+        relation.to_a
+      end
+
       def where(cond, *params)
-        all.where(cond, *params)
+        relation.where(cond, *params)
       end
 
       def asc(field)
-        all.asc(field)
+        relation.asc(field)
       end
 
       def desc(field)
-        all.desc(field)
+        relation.desc(field)
       end
 
       def id
