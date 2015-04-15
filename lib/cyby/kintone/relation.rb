@@ -60,6 +60,10 @@ module Cyby
         end
         query
       end
+
+      def inspect
+        { app: @app.id, query: to_query }.inspect
+      end
     end
   end
 end

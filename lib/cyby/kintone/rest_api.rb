@@ -1,6 +1,8 @@
 module Cyby
   module Kintone
     class RestApi
+      attr_reader :app
+
       AUTH = 'X-Cybozu-Authorization'
 
       include HTTParty

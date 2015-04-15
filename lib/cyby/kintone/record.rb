@@ -17,6 +17,14 @@ module Cyby
         self.[](method_name.to_s.camelize(:lower))
       end
 
+      def inspect
+        hash = {}
+        @raw.each do |key, value|
+          hash[key] = value["value"]
+        end
+        hash.inspect
+      end
+
       private
       def convert(args)
         type = args['type']

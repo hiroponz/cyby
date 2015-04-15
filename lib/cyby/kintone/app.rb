@@ -50,6 +50,14 @@ module Cyby
       def desc(field)
         all.desc(field)
       end
+
+      def id
+        @api.app
+      end
+
+      def inspect
+        { id: id }.inspect
+      end
     end
   end
 end
