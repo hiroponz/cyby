@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["hiroyuki_sato@spiber.jp"]
   spec.description   = %q(Cybozu API wrapper)
   spec.summary       = %q(Cybozu API wrapper)
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/hiroponz/cyby"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($RS)

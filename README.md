@@ -1,9 +1,6 @@
-Simple Cybozu API wrapper
-----------------
+## Cyby
 
-## Ruby Gem
-
-TODO: Write a gem description
+Simple Cybozu REST API wrapper
 
 ### Installation
 
@@ -19,24 +16,43 @@ Or install it yourself as:
 
     $ gem install cyby
 
-### Usage
-
-TODO: Write usage instructions here
-
-Create '.cyby.yml' file in your home dirctory.
+And then create '.cyby.yml' file in your home dirctory.
 
     subdomain: <your subdomain>
     login: <your login>
     password: <your password>
 
-And then require in ruby script.
+### Usage
+
+Require in ruby script.
 
     require 'cyby'
-
+    
+    # Create App object.
     app = Cyby::Kintone::App.new(1) # kintone app id
-    records = app.find(query: 'id = 2')
+    
+    # Filter the records by the various ways.
+    record = app.where("id = 1").first
+    records = app.all
+    app.where("id >= ?", 10).each { |record| puts record.id }
+    app.where("name like ?", "Bob").each { |record| puts record.name }
+    app.where("create_at < ?", Time.new(2015, 1, 1)).each { |record| puts record.create_at }
+    app.where("dropdown in ?", ["a", "b", "c"]).each{ |record| puts record.dropdown }
+    app.where("id >= ? and id <= ?", 10, 20).each { |record| puts record.id }
+    app.where("id >= ?", 10).and(id <= ?", 20).each { |record| puts record.id }
+    app.where("id <= ?", 10).or(id >= ?", 20).each { |record| puts record.id }
+    
+    # Sort the records.
+    app.asc("id").each { |record| record.id }
+    app.desc("id").each { |record| record.id }
+    app.asc("name").desc("id").each { |record| record.id }
+    
+    # Select the fields.
+    app.select("id", "name", "create_at").map { |record| [record.id, record.name, record.create_at] }
+    
+    # Use method chain
+    app.select("id", "name").where("name like ?, "Bob").asc("id").each { |record| puts record.name }
 
 ### Author
 
 Hiroyuki Sato <hiroyuki_sato@spiber.jp>
-
