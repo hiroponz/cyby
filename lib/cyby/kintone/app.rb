@@ -40,7 +40,7 @@ module Cyby
       end
 
       def all
-        relation.to_a
+        relation.all
       end
 
       def where(cond, *params)

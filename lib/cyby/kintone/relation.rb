@@ -3,6 +3,8 @@ module Cyby
     class Relation
       include Enumerable
 
+      alias_method :all, :to_a
+
       def initialize(app)
         @app = app
         @where = Query::Where.new
