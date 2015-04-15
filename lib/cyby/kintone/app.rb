@@ -55,6 +55,10 @@ module Cyby
         relation.desc(field)
       end
 
+      def select(*fields)
+        relation.select(*fields)
+      end
+
       def id
         @api.app
       end

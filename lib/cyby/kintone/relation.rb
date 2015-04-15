@@ -12,6 +12,7 @@ module Cyby
       def each
         args = {}
         args[:query] = to_query
+        args[:fields] = @fields if @fields
         records = @app.find(args)
         records.map do |record|
           yield record
@@ -53,6 +54,11 @@ module Cyby
         self
       end
 
+      def select(*fields)
+        @fields = fields
+        self
+      end
+
       def to_query
         query = @where.to_query
         if @order_by.any?
@@ -62,7 +68,7 @@ module Cyby
       end
 
       def inspect
-        { app: @app.id, query: to_query }.inspect
+        { app: @app.id, query: to_query, select: @fields }.inspect
       end
     end
   end
