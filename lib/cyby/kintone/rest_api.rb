@@ -21,25 +21,45 @@ module Cyby
       def get(path, body = {})
         body.merge!(app: @app)
         options = { headers: headers, body: body.to_json }
-        self.class.get(path, options)
+        resp = self.class.get(path, options)
+        if resp.code == 200
+          resp
+        else
+          fail resp["message"]
+        end
       end
 
       def post(path, body = {})
         body.merge!(app: @app)
         options = { headers: headers, body: body.to_json }
-        self.class.post(path, options)
+        resp = self.class.post(path, options)
+        if resp.code == 200
+          resp
+        else
+          fail resp["message"]
+        end
       end
 
       def put(path, body = {})
         body.merge!(app: @app)
         options = { headers: headers, body: body.to_json }
-        self.class.put(path, options)
+        resp = self.class.put(path, options)
+        if resp.code == 200
+          resp
+        else
+          fail resp["message"]
+        end
       end
 
       def delete(path, body = {})
         body.merge!(app: @app)
         options = { headers: headers, body: body.to_json }
-        self.class.delete(path, options)
+        resp = self.class.delete(path, options)
+        if resp.code == 200
+          resp
+        else
+          fail resp["message"]
+        end
       end
     end
   end

@@ -1,7 +1,8 @@
 module Cyby
   module Kintone
     class Record
-      def initialize(raw)
+      def initialize(app, raw = {})
+        @app = app
         @raw = raw
       end
 
@@ -13,8 +14,24 @@ module Cyby
         end
       end
 
+      def []=(key, value)
+        @raw[key] ||= {}
+        case key
+        when "$id"
+          @raw[key]["type"] = "__ID__"
+        when "$revision"
+          @raw[key]["type"] = "__REVISION__"
+        end
+        @raw[key]["value"] = value
+      end
+
       def method_missing(method_name, *args)
-        self.[](method_name.to_s.camelize(:lower))
+        key = method_name.to_s
+        if key[-1] == "="
+          self.[]=(key[0..-2], args[0])
+        else
+          self.[](key)
+        end
       end
 
       def inspect
@@ -23,6 +40,26 @@ module Cyby
           hash[key] = value["value"]
         end
         hash.inspect
+      end
+
+      def save
+        @app.save(self)
+      end
+
+      def to_json_for_save
+        record = @raw.select do |key, value|
+          case value["type"]
+          when "CREATOR", "CREATED_TIME", "MODIFIER", "UPDATED_TIME", "STATUS", "STATUS_ASSIGNEE", "RECORD_NUMBER", "__REVISION__", "__ID__"
+            false
+          else
+            true
+          end
+        end
+        if @raw["$id"]
+          { id: @raw["$id"]["value"], record: record }
+        else
+          { record: record }
+        end
       end
 
       private
