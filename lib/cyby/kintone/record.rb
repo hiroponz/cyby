@@ -9,7 +9,7 @@ module Cyby
         if @raw.key?(key)
           convert(@raw[key])
         else
-          fail "'#{key}' dose'nt exist"
+          fail "'#{key}' doesn't exist"
         end
       end
 
