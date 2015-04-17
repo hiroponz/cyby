@@ -43,6 +43,12 @@ module Cyby
         true
       end
 
+      def delete(record)
+        json = { ids: [record["$id"]] }
+        @api.delete("/records.json", json)
+        true
+      end
+
       def new_record
         Record.new(self)
       end

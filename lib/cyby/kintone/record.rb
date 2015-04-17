@@ -46,6 +46,10 @@ module Cyby
         @app.save(self)
       end
 
+      def delete
+        @app.delete(self)
+      end
+
       def to_json_for_save
         record = @raw.select do |key, value|
           case value["type"]
