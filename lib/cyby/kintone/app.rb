@@ -32,15 +32,20 @@ module Cyby
       end
 
       def save(record)
-        json = record.to_json_for_save
-        if json[:id]
-          resp = @api.put("/record.json", json)
+        if record.changed?
+          json = record.to_json_for_save
+          if json[:id]
+            resp = @api.put("/record.json", json)
+          else
+            resp = @api.post("/record.json", json)
+            record["$id"] = resp["id"]
+          end
+          record["$revision"] = resp["revision"]
+          record.unchanged
+          true
         else
-          resp = @api.post("/record.json", json)
-          record["$id"] = resp["id"]
+          false
         end
-        record["$revision"] = resp["revision"]
-        true
       end
 
       def delete(record)
