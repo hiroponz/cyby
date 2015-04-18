@@ -4,6 +4,7 @@ module Cyby
       def initialize(app, raw = {})
         @app = app
         @raw = raw
+        @changed = {}
       end
 
       def [](key)
@@ -16,13 +17,27 @@ module Cyby
 
       def []=(key, value)
         @raw[key] ||= {}
-        case key
-        when "$id"
-          @raw[key]["type"] = "__ID__"
-        when "$revision"
-          @raw[key]["type"] = "__REVISION__"
+        if @raw[key]["value"] != value
+          changed(key)
         end
         @raw[key]["value"] = value
+      end
+
+      def changed(field)
+        case field
+        when "$id", "$revision"
+          # Do nothing
+        else
+          @changed[field] = true
+        end
+      end
+
+      def changed?
+        @changed.any?
+      end
+
+      def unchanged
+        @changed = {}
       end
 
       def method_missing(method_name, *args)
@@ -52,12 +67,7 @@ module Cyby
 
       def to_json_for_save
         record = @raw.select do |key, value|
-          case value["type"]
-          when "CREATOR", "CREATED_TIME", "MODIFIER", "UPDATED_TIME", "STATUS", "STATUS_ASSIGNEE", "RECORD_NUMBER", "__REVISION__", "__ID__"
-            false
-          else
-            true
-          end
+          @changed[key]
         end
         if @raw["$id"]
           { id: @raw["$id"]["value"], record: record }

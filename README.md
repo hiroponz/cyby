@@ -69,6 +69,11 @@ Get records.
     end
     records = relation.all
 
+    # Combining defined conditions
+    adult = app.where("age >= ?", 18)
+    man = app.where("sex in ?", ["man"])
+    records = app.where(adult).and(man)
+
 Create a record.
 
     record = app.new_record
