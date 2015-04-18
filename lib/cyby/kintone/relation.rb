@@ -1,14 +1,16 @@
 module Cyby
   module Kintone
     class Relation
+      attr_reader :condition, :order_by, :fields
       include Enumerable
 
       alias_method :all, :to_a
 
       def initialize(app)
         @app = app
-        @where = Query::Where.new
+        @condition = Query::Where.new
         @order_by = []
+        @fields = nil
       end
 
       def each
@@ -22,16 +24,21 @@ module Cyby
       end
 
       def where(cond, *params)
-        @where = Query::Where.new(cond, *params)
+        case cond
+        when String
+          @condition = Query::Where.new(cond, *params)
+        else
+          @condition = cond.condition
+        end
         self
       end
 
       def and(cond, *params)
         case cond
         when String
-          @where = Query::WhereAnd.new(@where, Query::Where.new(cond, *params))
+          @condition = Query::WhereAnd.new(@condition, Query::Where.new(cond, *params))
         else
-          @where = Query::WhereAnd.new(@where, cond)
+          @condition = Query::WhereAnd.new(@condition, cond.condition)
         end
         self
       end
@@ -39,9 +46,9 @@ module Cyby
       def or(cond, *params)
         case cond
         when String
-          @where = Query::WhereOr.new(@where, Query::Where.new(cond, *params))
+          @condition = Query::WhereOr.new(@condition, Query::Where.new(cond, *params))
         else
-          @where = Query::WhereOr.new(@where, cond)
+          @condition = Query::WhereOr.new(@condition, cond.condition)
         end
         self
       end
@@ -62,7 +69,7 @@ module Cyby
       end
 
       def to_query
-        query = @where.to_query
+        query = @condition.to_query
         if @order_by.any?
           query += " order by #{@order_by.join(',')}"
         end
