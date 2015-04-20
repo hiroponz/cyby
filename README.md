@@ -2,6 +2,10 @@
 
 Simple Cybozu REST API wrapper
 
+### Lisence
+
+- MIT
+
 ### Installation
 
 Add this line to your application's Gemfile:
