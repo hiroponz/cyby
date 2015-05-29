@@ -25,7 +25,7 @@ module Cyby
         if resp.code == 200
           resp
         else
-          fail resp["message"]
+          raise Cyby::Kintone::InvalidRecord.new(resp)
         end
       end
 
@@ -36,7 +36,7 @@ module Cyby
         if resp.code == 200
           resp
         else
-          fail resp["message"]
+          raise Cyby::Kintone::InvalidRecord.new(resp)
         end
       end
 
@@ -47,7 +47,7 @@ module Cyby
         if resp.code == 200
           resp
         else
-          fail resp["message"]
+          raise Cyby::Kintone::InvalidRecord.new(resp)
         end
       end
 
@@ -58,7 +58,7 @@ module Cyby
         if resp.code == 200
           resp
         else
-          fail resp["message"]
+          raise Cyby::Kintone::InvalidRecord.new(resp)
         end
       end
     end
