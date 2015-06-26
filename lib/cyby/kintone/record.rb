@@ -41,7 +41,11 @@ module Cyby
       end
 
       def method_missing(method_name, *args)
-        key = method_name.to_s
+        key = if @app.convert_to_camelized_field
+                method_name.to_s.camelize(:lower)
+              else
+                method_name.to_s
+              end
         if key[-1] == "="
           self.[]=(key[0..-2], args[0])
         else
