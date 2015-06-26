@@ -3,8 +3,11 @@ module Cyby
     class App
       LIMIT = 100
 
-      def initialize(id)
+      attr_accessor :convert_to_camelized_field
+
+      def initialize(id, convert_to_camelized_field = true)
         @api = RestApi.new(id)
+        @convert_to_camelized_field = convert_to_camelized_field
       end
 
       def find(params)
