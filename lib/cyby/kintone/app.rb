@@ -5,7 +5,7 @@ module Cyby
 
       attr_accessor :convert_to_camelized_field
 
-      def initialize(id, convert_to_camelized_field = true)
+      def initialize(id, convert_to_camelized_field = false)
         @api = RestApi.new(id)
         @convert_to_camelized_field = convert_to_camelized_field
       end
